@@ -13,5 +13,5 @@ String longestUniqueSubstring(String str) {
     i++;
   }
 
-  return store.join(""); // Output the result
+  return store.join("");
 }
