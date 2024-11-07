@@ -15,9 +15,3 @@ String longestUniqueSubstring(String str) {
 
   return store.join(""); // Output the result
 }
-
-main() {
-  print(longestUniqueSubstring("abcacbd"));
-  print(longestUniqueSubstring("aaaaaaaa"));
-  print(longestUniqueSubstring("abcde"));
-}
