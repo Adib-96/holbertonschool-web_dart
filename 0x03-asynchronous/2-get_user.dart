@@ -1,15 +1,9 @@
-import '2-util.dart'; // Import the provided util.dart file
+import '2-util.dart';
 
 Future<void> getUser() async {
   try {
-    String user = await fetchUser();
-    print(user);
-  } catch (e) {
-    print('error caught: $e');
+    print(await fetchUser());
+  } catch (error) {
+    print('error caught: $error');
   }
 }
-
-Future<String> fetchUser() => Future.delayed(
-      const Duration(seconds: 2),
-      () => throw 'Cannot locate user',
-    );

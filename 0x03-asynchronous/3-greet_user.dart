@@ -1,35 +1,28 @@
-import 'util.dart'; // Import the provided util.dart file
+import '3-util.dart';
+import 'dart:convert';
 
 Future<String> greetUser() async {
   try {
-    String userData = await fetchUserData();
-    final user = jsonDecode(userData);
-    return 'Hello ${user['username']}';
-  } catch (e) {
-    return 'error caught: $e';
+    String user = await fetchUserData();
+    Map userMap = jsonDecode(user);
+    return 'Hello ${userMap['username']}';
+  } catch (error) {
+    return 'error caught: $error';
   }
 }
 
 Future<String> loginUser() async {
   try {
-    bool credentialsValid = await checkCredentials();
-    if (credentialsValid) {
-      print('There is a user: true');
-      return await greetUser();
+    bool hasValidCredential = await checkCredentials();
+
+    if (hasValidCredential) {
+      print("There is a user: true");
+      return (await greetUser());
     } else {
-      print('There is a user: false');
+      print("There is a user: false");
       return 'Wrong credentials';
     }
-  } catch (e) {
-    return 'error caught: $e';
+  } catch (error) {
+    return 'error caught: $error';
   }
 }
-
-Future<String> fetchUserData() => Future.delayed(
-      const Duration(seconds: 2),
-      () =>
-          '{"id" : "7ee9a243-01ca-47c9-aa14-0149789764c3", "username" : "admin"}',
-    );
-
-Future<bool> checkCredentials() =>
-    Future.delayed(const Duration(seconds: 2), () => true);

@@ -1,46 +1,19 @@
+import '4-util.dart';
 import 'dart:convert';
-import '4-util.dart'; // Import the provided util.dart file
 
-Future<double> calculateTotal() async {
+Future<num> calculateTotal() async {
   try {
-    String userData = await fetchUserData();
-    final user = jsonDecode(userData);
-    String userId = user['id'];
+    Map userData = jsonDecode(await fetchUserData());
+    String userId = userData['id'];
 
-    // Fetching user orders
-    String ordersData = await fetchUserOrders(userId);
-    List orders = jsonDecode(ordersData);
+    List<dynamic> userOrder = jsonDecode(await fetchUserOrders(userId));
 
     double total = 0.0;
-    // Calculate the total price for all ordered items
-    for (var product in orders) {
-      String productPriceData = await fetchProductPrice(product);
-      double productPrice =
-          double.parse(jsonDecode(productPriceData).toString());
-      total += productPrice;
+    for (var product in userOrder) {
+      total += double.parse(await fetchProductPrice(product));
     }
-
     return total;
-  } catch (e) {
-    print('error caught: $e');
+  } catch (error) {
     return -1;
   }
-}
-
-Future<String> fetchUserOrders(String id) async {
-  var orders = {
-    "7ee9a243-01ca-47c9-aa14-0149789764c3": ["pizza", "orange"]
-  };
-  return Future.delayed(
-    const Duration(seconds: 2),
-    () => json.encode(orders[id] ?? []),
-  );
-}
-
-Future<String> fetchProductPrice(String product) async {
-  var products = {"pizza": 20.30, "orange": 10.00, "water": 5.00, "soda": 8.50};
-  return Future.delayed(
-    const Duration(seconds: 2),
-    () => json.encode(products[product]?.toString() ?? '0'),
-  );
 }
